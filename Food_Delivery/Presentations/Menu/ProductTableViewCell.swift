@@ -1,21 +1,17 @@
-// GoodTableViewCell.swift
+// ProductTableViewCell.swift
 // Food_Delivery. Created by Zlata Guseva.
 
+import Kingfisher
 import SnapKit
 import UIKit
 
-class GoodTableViewCell: UITableViewCell {
-    private var goodImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.backgroundColor = .gray
-        return imageView
-    }()
+class ProductTableViewCell: UITableViewCell {
+    private var productImageView = UIImageView()
 
     private var nameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 17)
         label.textColor = .mainTextColor
-        label.text = "Name"
         return label
     }()
 
@@ -23,7 +19,6 @@ class GoodTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 13)
         label.textColor = .subTitleColor
-        label.text = "descriptionLabel"
         label.numberOfLines = 0
         return label
     }()
@@ -31,7 +26,6 @@ class GoodTableViewCell: UITableViewCell {
     private var priceLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 13)
-        label.text = "price"
         label.textAlignment = .center
         label.textColor = .accentColor
         label.layer.borderColor = UIColor.accentColor?.cgColor
@@ -62,7 +56,7 @@ class GoodTableViewCell: UITableViewCell {
     }
 
     private func addSubviews() {
-        contentView.addSubview(goodImageView)
+        contentView.addSubview(productImageView)
         contentView.addSubview(nameLabel)
         contentView.addSubview(descriptionLabel)
         contentView.addSubview(priceLabel)
@@ -74,19 +68,20 @@ class GoodTableViewCell: UITableViewCell {
             make.trailing.leading.equalToSuperview().inset(16)
         }
 
-        goodImageView.snp.makeConstraints { make in
+        productImageView.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(16)
             make.top.bottom.equalToSuperview().inset(16)
             make.size.equalTo(132)
         }
 
         nameLabel.snp.makeConstraints { make in
-            make.leading.equalTo(goodImageView.snp.trailing).offset(16)
+            make.leading.equalTo(productImageView.snp.trailing).offset(16)
             make.top.equalToSuperview().inset(16)
         }
 
         descriptionLabel.snp.makeConstraints { make in
-            make.leading.equalTo(goodImageView.snp.trailing).offset(16)
+            make.leading.equalTo(productImageView.snp.trailing).offset(16)
+            make.trailing.equalToSuperview().inset(24)
             make.top.equalTo(nameLabel.snp.bottom).offset(8)
         }
 
@@ -95,5 +90,14 @@ class GoodTableViewCell: UITableViewCell {
             make.height.equalTo(32)
             make.width.equalTo(87)
         }
+    }
+}
+
+extension ProductTableViewCell: Configurable {
+    func configure(with model: Product) {
+        productImageView.kf.setImage(with: URL(string: model.imageURL))
+        nameLabel.text = model.name
+        descriptionLabel.text = model.description
+        priceLabel.text = "от \(model.price) р"
     }
 }

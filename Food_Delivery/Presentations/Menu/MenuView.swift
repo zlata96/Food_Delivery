@@ -5,13 +5,13 @@ import SnapKit
 import UIKit
 
 class MenuView: UIView {
-    var locationButton = LocationButton()
+    private var locationButton = LocationButton()
 
     var promoCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.register(cellWithClass: PromoCollectionViewCell.self)
+        collectionView.register(cellWithClass: BannerCollectionViewCell.self)
         collectionView.backgroundColor = .clear
         collectionView.showsHorizontalScrollIndicator = false
         return collectionView
@@ -27,12 +27,13 @@ class MenuView: UIView {
         return collectionView
     }()
 
-    var goodsTableView: UITableView = {
+    var productTableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(cellWithClass: GoodTableViewCell.self)
+        tableView.register(cellWithClass: ProductTableViewCell.self)
         tableView.rowHeight = 180
         tableView.separatorStyle = .singleLine
         tableView.backgroundColor = .white
+        tableView.layer.cornerRadius = 16
         return tableView
     }()
 
@@ -60,30 +61,30 @@ class MenuView: UIView {
         addSubview(locationButton)
         addSubview(promoCollectionView)
         addSubview(categoriesCollectionView)
-        addSubview(goodsTableView)
+        addSubview(productTableView)
     }
 
     private func makeConstraints() {
         locationButton.snp.makeConstraints {
-            $0.top.equalTo(safeAreaLayoutGuide.snp.top).offset(40)
+            $0.top.equalTo(safeAreaLayoutGuide.snp.top).offset(32)
             $0.leading.equalToSuperview().offset(16)
         }
 
         promoCollectionView.snp.makeConstraints {
-            $0.top.equalTo(locationButton.snp.bottom).offset(12)
+            $0.top.equalTo(locationButton.snp.bottom).offset(8)
             $0.trailing.equalToSuperview()
-            $0.leading.equalToSuperview().offset(8)
-            $0.height.equalTo(130)
+            $0.leading.equalToSuperview().offset(16)
+            $0.height.equalTo(112)
         }
 
         categoriesCollectionView.snp.makeConstraints {
             $0.top.equalTo(promoCollectionView.snp.bottom).offset(24)
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.equalToSuperview()
-            $0.height.equalTo(60)
+            $0.height.equalTo(32)
         }
 
-        goodsTableView.snp.makeConstraints {
+        productTableView.snp.makeConstraints {
             $0.leading.trailing.bottom.equalToSuperview()
             $0.top.equalTo(categoriesCollectionView.snp.bottom).offset(24)
         }

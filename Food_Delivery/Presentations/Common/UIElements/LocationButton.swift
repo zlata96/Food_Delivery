@@ -42,15 +42,13 @@ class LocationButton: UIButton {
     private func makeConstraints() {
         pointerImageView.snp.makeConstraints {
             $0.leading.equalTo(locationLabel.snp.trailing).offset(12)
-            $0.trailing.equalToSuperview()
             $0.height.equalTo(8)
             $0.width.equalTo(4)
-            $0.bottom.equalTo(locationLabel.snp.bottom).inset(4)
+            $0.top.equalToSuperview().offset(7)
         }
 
         locationLabel.snp.makeConstraints {
-            $0.height.equalTo(20)
-            $0.leading.equalToSuperview()
+            $0.leading.top.equalToSuperview()
         }
     }
 }
