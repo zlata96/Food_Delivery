@@ -158,6 +158,7 @@
 				CE69811329DDC6E300FAE496 /* Protocols */,
 				CEB6B5E429DA1F0100377829 /* Assets.xcassets */,
 				CEB6B5F229DA216900377829 /* Colors.xcassets */,
+				CEB6B5DB29DA1EFC00377829 /* AppDelegate.swift */,
 				CEB6B5E629DA1F0100377829 /* LaunchScreen.storyboard */,
 				CEB6B5E929DA1F0100377829 /* Info.plist */,
 			);
@@ -178,6 +179,7 @@
 		CEB6B5FB29DC422D00377829 /* Presentations */ = {
 			isa = PBXGroup;
 			children = (
+				CEB6B5F729DC3FE500377829 /* TabBarController.swift */,
 				CEB6B60429DC4A1400377829 /* Common */,
 				CEB6B5FD29DC425000377829 /* Soon */,
 				CEB6B5FC29DC423900377829 /* Menu */,
@@ -217,7 +219,6 @@
 		CEB6B60529DC4A1A00377829 /* UIElements */ = {
 			isa = PBXGroup;
 			children = (
-				CEB6B5F729DC3FE500377829 /* TabBarController.swift */,
 				CEB6B60629DC4A3B00377829 /* LocationButton.swift */,
 			);
 			path = UIElements;
@@ -226,7 +227,6 @@
 		CEB6B60E29DC50AC00377829 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				CEB6B5DB29DA1EFC00377829 /* AppDelegate.swift */,
 				CEB6B60F29DC50BF00377829 /* Constants */,
 				CEB6B5F629DA22EB00377829 /* Extensions */,
 			);

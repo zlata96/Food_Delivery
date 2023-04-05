@@ -84,5 +84,9 @@ extension CategoriesView: UICollectionViewDelegate, UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         delegate?.didSelectCategory(with: categoriesData[indexPath.row].id)
+        
+        guard let cell = collectionView.cellForItem(at: indexPath) as? CategoryCell else { return }
+        cell.state = .selected
+        
     }
 }
