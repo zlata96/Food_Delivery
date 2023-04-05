@@ -4,15 +4,17 @@
 import SnapKit
 import UIKit
 
-// MARK: - CategoriesView
+// MARK: - CategoriesViewDelegate
 
 protocol CategoriesViewDelegate: AnyObject {
     func didSelectCategory(with categoryId: String)
 }
 
+// MARK: - CategoriesView
+
 class CategoriesView: UICollectionReusableView {
     static let reuseIdentifier = "categoriesHeaderView"
-    
+
     weak var delegate: CategoriesViewDelegate?
 
     private let productsService = ProductsService()

@@ -21,7 +21,6 @@ class MenuViewController: UIViewController {
     }
 
     func setupCollections() {
-        
         menuView.collectionView.delegate = self
         menuView.collectionView.dataSource = self
     }
@@ -48,11 +47,14 @@ class MenuViewController: UIViewController {
     }
 }
 
+// MARK: CategoriesViewDelegate
+
 extension MenuViewController: CategoriesViewDelegate {
     func didSelectCategory(with categoryId: String) {
         scrollToCategory(with: categoryId)
     }
 }
+
 // MARK: UICollectionViewDelegate
 
 extension MenuViewController: UICollectionViewDelegate {
