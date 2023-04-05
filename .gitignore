@@ -96,3 +96,4 @@ fastlane/test_output
 # https://github.com/johnno1962/injectionforxcode
 
 iOSInjectionProject/
+Food_Delivery.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
