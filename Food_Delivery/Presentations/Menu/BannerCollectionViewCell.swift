@@ -42,5 +42,6 @@ class BannerCollectionViewCell: UICollectionViewCell {
 extension BannerCollectionViewCell: Configurable {
     func configure(with model: Banner) {
         bannerImageView.kf.setImage(with: URL(string: model.imageURL))
+        dropShadow()
     }
 }

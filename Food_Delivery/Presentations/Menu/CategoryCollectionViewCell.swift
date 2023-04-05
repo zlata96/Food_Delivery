@@ -11,7 +11,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
 
         var backgroundColor: UIColor {
             switch self {
-            case .selected: return UIColor.accentColor?.withAlphaComponent(0.2) ?? .white
+            case .selected: return UIColor.accentColor?.withAlphaComponent(0.4) ?? .white
             case .unselected: return UIColor.mainBackgroundColor ?? .white
             }
         }
@@ -19,7 +19,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         var textColor: UIColor {
             switch self {
             case .selected: return UIColor.accentColor ?? .white
-            case .unselected: return UIColor.accentColor?.withAlphaComponent(0.2) ?? .white
+            case .unselected: return UIColor.accentColor?.withAlphaComponent(0.4) ?? .white
             }
         }
 
