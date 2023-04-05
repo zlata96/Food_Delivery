@@ -77,6 +77,7 @@ class ProductCell: UICollectionViewCell {
 
         nameLabel.snp.makeConstraints { make in
             make.leading.equalTo(productImageView.snp.trailing).offset(16)
+            make.trailing.equalToSuperview().inset(16)
             make.top.equalToSuperview().inset(16)
         }
 
