@@ -13,9 +13,6 @@ class MenuViewController: UIViewController {
     private var productsData: [Product] = []
     private var bannersData: [Banner] = []
 
-    var chosenProductItemIndex: IndexPath?
-    var isNeedOffset = false
-
     override func viewDidLoad() {
         super.viewDidLoad()
         view = menuView
@@ -57,22 +54,6 @@ extension MenuViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let categoriesHeaderView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: CategoriesView.reuseIdentifier, for: indexPath) as! CategoriesView
         return categoriesHeaderView
-    }
-
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let chosenMenuItemIndex, let menuCell = cell as? ProductCell else {
-            return chosenProductItemIndex = IndexPath(row: 0, section: 1)
-        }
-
-        if chosenMenuItemIndex == indexPath, chosenMenuItemIndex == IndexPath(row: 0, section: Section.product.rawValue) {
-            isNeedOffset = false
-            chosenProductItemIndex = nil
-        } else if chosenMenuItemIndex == indexPath, isNeedOffset {
-            let marginFromTopViews = view.safeAreaInsets.top + 60
-            let point = menuCell.frame.origin.y
-            collectionView.setContentOffset(CGPoint(x: 0, y: point - marginFromTopViews), animated: false)
-            isNeedOffset = false
-        }
     }
 }
 
