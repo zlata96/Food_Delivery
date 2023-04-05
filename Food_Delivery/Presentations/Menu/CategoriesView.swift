@@ -6,8 +6,14 @@ import UIKit
 
 // MARK: - CategoriesView
 
+protocol CategoriesViewDelegate: AnyObject {
+    func didSelectCategory(with categoryId: String)
+}
+
 class CategoriesView: UICollectionReusableView {
     static let reuseIdentifier = "categoriesHeaderView"
+    
+    weak var delegate: CategoriesViewDelegate?
 
     private let productsService = ProductsService()
     private var categoriesData: [Category] = []
@@ -75,6 +81,6 @@ extension CategoriesView: UICollectionViewDelegate, UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // TODO:
+        delegate?.didSelectCategory(with: categoriesData[indexPath.row].id)
     }
 }

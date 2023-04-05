@@ -21,6 +21,7 @@ class MenuViewController: UIViewController {
     }
 
     func setupCollections() {
+        
         menuView.collectionView.delegate = self
         menuView.collectionView.dataSource = self
     }
@@ -36,9 +37,8 @@ class MenuViewController: UIViewController {
         }
     }
 
-    // TODO:
-    private func scrollToCategory(categoryID: String) {
-        if let index = productsData.firstIndex(where: { $0.categoryID == categoryID }) {
+    private func scrollToCategory(with categoryId: String) {
+        if let index = productsData.firstIndex(where: { $0.categoryID == categoryId }) {
             menuView.collectionView.scrollToItem(
                 at: IndexPath(row: index, section: 1),
                 at: .top,
@@ -48,11 +48,17 @@ class MenuViewController: UIViewController {
     }
 }
 
+extension MenuViewController: CategoriesViewDelegate {
+    func didSelectCategory(with categoryId: String) {
+        scrollToCategory(with: categoryId)
+    }
+}
 // MARK: UICollectionViewDelegate
 
 extension MenuViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let categoriesHeaderView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: CategoriesView.reuseIdentifier, for: indexPath) as! CategoriesView
+        categoriesHeaderView.delegate = self
         return categoriesHeaderView
     }
 }
