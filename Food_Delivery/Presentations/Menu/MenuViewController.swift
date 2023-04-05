@@ -39,7 +39,7 @@ class MenuViewController: UIViewController {
     private func scrollToCategory(with categoryId: String) {
         if let index = productsData.firstIndex(where: { $0.categoryID == categoryId }) {
             menuView.collectionView.scrollToItem(
-                at: IndexPath(row: index, section: 1),
+                at: IndexPath(row: index, section: Section.product.rawValue),
                 at: .top,
                 animated: true
             )
