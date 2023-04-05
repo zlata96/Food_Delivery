@@ -22,13 +22,19 @@ class CategoryCollectionViewCell: UICollectionViewCell {
             case .unselected: return UIColor.accentColor?.withAlphaComponent(0.2) ?? .white
             }
         }
+
+        var font: UIFont {
+            switch self {
+            case .selected: return .boldSystemFont(ofSize: 13)
+            case .unselected: return .systemFont(ofSize: 13)
+            }
+        }
     }
 
     private lazy var productCategoryLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 10)
+        label.font = collectionViewCellState.font
         label.textColor = collectionViewCellState.textColor
-        label.text = "category"
         label.layer.borderColor = UIColor.accentColor?.withAlphaComponent(0.2).cgColor
         return label
     }()
@@ -66,5 +72,11 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         productCategoryLabel.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
+    }
+}
+
+extension CategoryCollectionViewCell: Configurable {
+    func configure(with model: Category) {
+        productCategoryLabel.text = model.name
     }
 }

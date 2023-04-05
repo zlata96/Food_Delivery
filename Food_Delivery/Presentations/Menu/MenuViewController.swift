@@ -5,26 +5,42 @@ import UIKit
 
 class MenuViewController: UIViewController {
     private var menuView = MenuView()
+    private let productsService = ProductsService()
+    private var productsData: [Product] = []
+    private var categoriesData: [Category] = []
+    private var bannersData: [Banner] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view = menuView
-        setupDelegate()
-        setupTags()
+        setupCollections()
+        fetchData()
     }
 
-    func setupDelegate() {
-        menuView.goodsTableView.delegate = self
-        menuView.goodsTableView.dataSource = self
-        menuView.categoriesCollectionView.dataSource = self
-        menuView.categoriesCollectionView.delegate = self
+    func setupCollections() {
+        menuView.productTableView.delegate = self
+        menuView.productTableView.dataSource = self
+        menuView.promoCollectionView.tag = 1
         menuView.promoCollectionView.dataSource = self
         menuView.promoCollectionView.delegate = self
+        menuView.categoriesCollectionView.tag = 2
+        menuView.categoriesCollectionView.dataSource = self
+        menuView.categoriesCollectionView.delegate = self
     }
 
-    func setupTags() {
-        menuView.categoriesCollectionView.tag = 2
-        menuView.promoCollectionView.tag = 1
+    func fetchData() {
+        productsService.getBanners {
+            self.bannersData = $0
+            self.menuView.promoCollectionView.reloadData()
+        }
+        productsService.getCategories {
+            self.categoriesData = $0
+            self.menuView.categoriesCollectionView.reloadData()
+        }
+        productsService.getProducts {
+            self.productsData = $0
+            self.menuView.productTableView.reloadData()
+        }
     }
 }
 
@@ -32,11 +48,12 @@ extension MenuViewController: UITableViewDelegate {}
 
 extension MenuViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        2
+        productsData.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withClass: GoodTableViewCell.self)
+        let cell = tableView.dequeueReusableCell(withClass: ProductTableViewCell.self)
+        cell.configure(with: productsData[indexPath.row])
         return cell
     }
 }
@@ -46,8 +63,8 @@ extension MenuViewController: UICollectionViewDelegate {}
 extension MenuViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch collectionView.tag {
-        case 1: return 2
-        case 2: return 4
+        case 1: return bannersData.count
+        case 2: return categoriesData.count
         default: return 0
         }
     }
@@ -59,13 +76,15 @@ extension MenuViewController: UICollectionViewDataSource {
         switch collectionView.tag {
         case 1:
             let cell1 = collectionView.dequeueReusableCell(
-                withClass: PromoCollectionViewCell.self, for: indexPath
+                withClass: BannerCollectionViewCell.self, for: indexPath
             )
+            cell1.configure(with: bannersData[indexPath.row])
             return cell1
         case 2:
             let cell2 = collectionView.dequeueReusableCell(
                 withClass: CategoryCollectionViewCell.self, for: indexPath
             )
+            cell2.configure(with: categoriesData[indexPath.row])
             return cell2
         default:
             return UICollectionViewCell()
