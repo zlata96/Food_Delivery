@@ -26,14 +26,14 @@ class TabBarController: UITabBarController {
         let firstViewController = MenuViewController()
         firstViewController.tabBarItem = UITabBarItem(
             title: Texts.menu,
-            image: UIImage(systemName: "pencil"),
+            image: UIImage(named: "menu"),
             tag: 0
         )
 
         let secondViewController = SoonViewController()
         secondViewController.tabBarItem = UITabBarItem(
             title: Texts.contacts,
-            image: UIImage(systemName: "pencil"),
+            image: UIImage(named: "contacts"),
             tag: 1
         )
 
@@ -46,7 +46,7 @@ class TabBarController: UITabBarController {
         let fourthViewController = SoonViewController()
         fourthViewController.tabBarItem = UITabBarItem(
             title: Texts.cart,
-            image: UIImage(systemName: "pencil"),
+            image: UIImage(named: "cart"),
             tag: 3
         )
 

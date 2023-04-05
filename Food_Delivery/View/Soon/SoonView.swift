@@ -37,8 +37,8 @@ class SoonView: UIView {
     }
 
     private func makeConstraints() {
-//        soonLabel.snp.makeConstraints {
-//            $0.center.equalToSuperview()
-//        }
+        soonLabel.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
     }
 }

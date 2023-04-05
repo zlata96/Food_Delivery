@@ -8,4 +8,5 @@ extension UIColor {
     static let mainBackgroundColor = UIColor(named: "mainBackgroundColor")
     static let mainTextColor = UIColor(named: "mainTextColor")
     static let unselectedTabBarItem = UIColor(named: "unselectedTabBarItem")
+    static let subTitleColor = UIColor(named: "subTitleColor")
 }

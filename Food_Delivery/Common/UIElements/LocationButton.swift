@@ -13,8 +13,8 @@ class LocationButton: UIButton {
 
     var locationLabel: UILabel = {
         let label = UILabel()
-        label.text = "Location"
-        label.font = .systemFont(ofSize: 8)
+        label.text = "Москва"
+        label.font = .systemFont(ofSize: 17)
         label.textColor = .mainTextColor
         return label
     }()
@@ -40,16 +40,17 @@ class LocationButton: UIButton {
     }
 
     private func makeConstraints() {
-//            pointerImageView.snp.makeConstraints {
-//                $0.leading.equalTo(locationLabel.snp.trailing).offset(4)
-//                $0.trailing.equalToSuperview()
-//                $0.centerY.equalToSuperview()
-//                $0.size.equalTo(4)
-//            }
-//
-//            locationLabel.snp.makeConstraints {
-//                $0.height.equalTo(8)
-//                $0.leading.equalToSuperview()
-//            }
+        pointerImageView.snp.makeConstraints {
+            $0.leading.equalTo(locationLabel.snp.trailing).offset(12)
+            $0.trailing.equalToSuperview()
+            $0.height.equalTo(8)
+            $0.width.equalTo(4)
+            $0.bottom.equalTo(locationLabel.snp.bottom).inset(4)
+        }
+
+        locationLabel.snp.makeConstraints {
+            $0.height.equalTo(20)
+            $0.leading.equalToSuperview()
+        }
     }
 }

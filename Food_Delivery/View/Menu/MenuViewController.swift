@@ -11,12 +11,11 @@ class MenuViewController: UIViewController {
         view = menuView
         setupDelegate()
         setupTags()
-        // Do any additional setup after loading the view.
     }
 
     func setupDelegate() {
-        menuView.goodstableView.delegate = self
-        menuView.goodstableView.dataSource = self
+        menuView.goodsTableView.delegate = self
+        menuView.goodsTableView.dataSource = self
         menuView.categoriesCollectionView.dataSource = self
         menuView.categoriesCollectionView.delegate = self
         menuView.promoCollectionView.dataSource = self
@@ -24,8 +23,8 @@ class MenuViewController: UIViewController {
     }
 
     func setupTags() {
-        menuView.categoriesCollectionView.tag = 1
-        menuView.promoCollectionView.tag = 2
+        menuView.categoriesCollectionView.tag = 2
+        menuView.promoCollectionView.tag = 1
     }
 }
 
@@ -46,7 +45,11 @@ extension MenuViewController: UICollectionViewDelegate {}
 
 extension MenuViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        2
+        switch collectionView.tag {
+        case 1: return 2
+        case 2: return 4
+        default: return 0
+        }
     }
 
     func collectionView(
@@ -56,16 +59,31 @@ extension MenuViewController: UICollectionViewDataSource {
         switch collectionView.tag {
         case 1:
             let cell1 = collectionView.dequeueReusableCell(
-                withClass: GoodsCategoryCollectionViewCell.self, for: indexPath
+                withClass: PromoCollectionViewCell.self, for: indexPath
             )
             return cell1
         case 2:
             let cell2 = collectionView.dequeueReusableCell(
-                withClass: GoodsCategoryCollectionViewCell.self, for: indexPath
+                withClass: CategoryCollectionViewCell.self, for: indexPath
             )
             return cell2
         default:
             return UICollectionViewCell()
+        }
+    }
+}
+
+extension MenuViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout _: UICollectionViewLayout,
+        sizeForItemAt _: IndexPath
+    ) -> CGSize {
+        switch collectionView.tag {
+        case 1: return CGSize(width: 300, height: 112)
+        case 2: return CGSize(width: 88, height: 32)
+        default:
+            return CGSize(width: 175, height: 221)
         }
     }
 }

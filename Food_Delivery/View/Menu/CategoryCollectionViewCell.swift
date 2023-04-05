@@ -1,9 +1,10 @@
-// GoodsCategoryCollectionViewCell.swift
+// CategoryCollectionViewCell.swift
 // Food_Delivery. Created by Zlata Guseva.
 
+import SnapKit
 import UIKit
 
-class GoodsCategoryCollectionViewCell: UICollectionViewCell {
+class CategoryCollectionViewCell: UICollectionViewCell {
     enum CollectionViewCellState {
         case selected
         case unselected
@@ -27,8 +28,7 @@ class GoodsCategoryCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.font = .systemFont(ofSize: 10)
         label.textColor = collectionViewCellState.textColor
-        label.backgroundColor = collectionViewCellState.backgroundColor
-        label.layer.cornerRadius = 8
+        label.text = "category"
         label.layer.borderColor = UIColor.accentColor?.withAlphaComponent(0.2).cgColor
         return label
     }()
@@ -53,6 +53,9 @@ class GoodsCategoryCollectionViewCell: UICollectionViewCell {
 
     private func setupStyle() {
         backgroundColor = .mainBackgroundColor
+        layer.cornerRadius = 16
+        layer.borderWidth = 1
+        layer.borderColor = UIColor.accentColor?.withAlphaComponent(0.2).cgColor
     }
 
     private func addSubviews() {
@@ -60,8 +63,8 @@ class GoodsCategoryCollectionViewCell: UICollectionViewCell {
     }
 
     private func makeConstraints() {
-//        productCategoryLabel.snp.makeConstraints {
-//            $0.centerX.bottom.equalToSuperview()
-//        }
+        productCategoryLabel.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
     }
 }
