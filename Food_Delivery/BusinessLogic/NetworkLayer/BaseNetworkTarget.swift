@@ -4,6 +4,8 @@
 import Foundation
 import Moya
 
+// MARK: - BaseNetworkTarget
+
 protocol BaseNetworkTarget: TargetType {}
 
 extension BaseNetworkTarget {

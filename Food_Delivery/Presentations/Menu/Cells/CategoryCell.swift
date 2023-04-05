@@ -1,10 +1,12 @@
-// CategoryCollectionViewCell.swift
+// CategoryCell.swift
 // Food_Delivery. Created by Zlata Guseva.
 
 import SnapKit
 import UIKit
 
-class CategoryCollectionViewCell: UICollectionViewCell {
+// MARK: - CategoryCell
+
+class CategoryCell: UICollectionViewCell {
     enum CollectionViewCellState {
         case selected
         case unselected
@@ -85,7 +87,9 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     }
 }
 
-extension CategoryCollectionViewCell: Configurable {
+// MARK: Configurable
+
+extension CategoryCell: Configurable {
     func configure(with model: Category) {
         productCategoryLabel.text = model.name
     }

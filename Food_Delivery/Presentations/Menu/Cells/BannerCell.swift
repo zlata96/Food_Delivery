@@ -1,10 +1,12 @@
-// BannerCollectionViewCell.swift
+// BannerCell.swift
 // Food_Delivery. Created by Zlata Guseva.
 
 import SnapKit
 import UIKit
 
-class BannerCollectionViewCell: UICollectionViewCell {
+// MARK: - BannerCell
+
+class BannerCell: UICollectionViewCell {
     private var bannerImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -39,7 +41,9 @@ class BannerCollectionViewCell: UICollectionViewCell {
     }
 }
 
-extension BannerCollectionViewCell: Configurable {
+// MARK: Configurable
+
+extension BannerCell: Configurable {
     func configure(with model: Banner) {
         bannerImageView.kf.setImage(with: URL(string: model.imageURL))
         dropShadow()

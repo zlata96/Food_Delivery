@@ -5,11 +5,15 @@ import Foundation
 
 import Moya
 
+// MARK: - ProductsAPI
+
 enum ProductsAPI {
     case getProducts
     case getCategories
     case getBanners
 }
+
+// MARK: BaseNetworkTarget
 
 extension ProductsAPI: BaseNetworkTarget {
     var path: String {

@@ -1,11 +1,13 @@
-// ProductTableViewCell.swift
+// ProductCell.swift
 // Food_Delivery. Created by Zlata Guseva.
 
 import Kingfisher
 import SnapKit
 import UIKit
 
-class ProductTableViewCell: UITableViewCell {
+// MARK: - ProductCell
+
+class ProductCell: UICollectionViewCell {
     private var productImageView = UIImageView()
 
     private var nameLabel: UILabel = {
@@ -34,8 +36,8 @@ class ProductTableViewCell: UITableViewCell {
         return label
     }()
 
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         commonInit()
     }
 
@@ -52,7 +54,6 @@ class ProductTableViewCell: UITableViewCell {
 
     private func setupStyle() {
         backgroundColor = .white
-        selectionStyle = .gray
     }
 
     private func addSubviews() {
@@ -93,7 +94,9 @@ class ProductTableViewCell: UITableViewCell {
     }
 }
 
-extension ProductTableViewCell: Configurable {
+// MARK: Configurable
+
+extension ProductCell: Configurable {
     func configure(with model: Product) {
         productImageView.kf.setImage(with: URL(string: model.imageURL))
         nameLabel.text = model.name

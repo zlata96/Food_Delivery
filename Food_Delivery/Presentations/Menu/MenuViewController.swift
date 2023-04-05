@@ -3,6 +3,8 @@
 
 import UIKit
 
+// MARK: - MenuViewController
+
 class MenuViewController: UIViewController {
     private var menuView = MenuView()
 
@@ -10,7 +12,9 @@ class MenuViewController: UIViewController {
 
     private var productsData: [Product] = []
     private var bannersData: [Banner] = []
-    private var categoriesData: [Category] = []
+
+    var chosenProductItemIndex: IndexPath?
+    var isNeedOffset = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,35 +24,26 @@ class MenuViewController: UIViewController {
     }
 
     func setupCollections() {
-        menuView.productTableView.delegate = self
-        menuView.productTableView.dataSource = self
-        menuView.promoCollectionView.tag = 1
-        menuView.promoCollectionView.dataSource = self
-        menuView.promoCollectionView.delegate = self
-        menuView.categoriesCollectionView.tag = 2
-        menuView.categoriesCollectionView.dataSource = self
-        menuView.categoriesCollectionView.delegate = self
+        menuView.collectionView.delegate = self
+        menuView.collectionView.dataSource = self
     }
 
     private func fetchData() {
         productsService.getBanners {
             self.bannersData = $0
-            self.menuView.promoCollectionView.reloadData()
-        }
-        productsService.getCategories {
-            self.categoriesData = $0
-            self.menuView.categoriesCollectionView.reloadData()
+            self.menuView.collectionView.reloadData()
         }
         productsService.getProducts {
             self.productsData = $0
-            self.menuView.productTableView.reloadData()
+            self.menuView.collectionView.reloadData()
         }
     }
 
+    // TODO:
     private func scrollToCategory(categoryID: String) {
         if let index = productsData.firstIndex(where: { $0.categoryID == categoryID }) {
-            menuView.productTableView.scrollToRow(
-                at: IndexPath(row: index, section: 0),
+            menuView.collectionView.scrollToItem(
+                at: IndexPath(row: index, section: 1),
                 at: .top,
                 animated: true
             )
@@ -56,43 +51,43 @@ class MenuViewController: UIViewController {
     }
 }
 
-extension MenuViewController: UITableViewDelegate {}
-
-extension MenuViewController: UITableViewDataSource {
-    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        productsData.count
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withClass: ProductTableViewCell.self)
-        cell.configure(with: productsData[indexPath.row])
-        return cell
-    }
-}
+// MARK: UICollectionViewDelegate
 
 extension MenuViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let cell = collectionView.cellForItem(at: indexPath) as? CategoryCollectionViewCell {
-            cell.state = .selected
-            scrollToCategory(categoryID: categoriesData[indexPath.row].id)
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let categoriesHeaderView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: CategoriesView.reuseIdentifier, for: indexPath) as! CategoriesView
+        return categoriesHeaderView
+    }
 
-            for otherIndexPath in collectionView.indexPathsForVisibleItems {
-                if let
-                    otherCell = collectionView.cellForItem(at: otherIndexPath) as? CategoryCollectionViewCell,
-                    otherIndexPath != indexPath {
-                    otherCell.state = .unselected
-                }
-            }
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let chosenMenuItemIndex, let menuCell = cell as? ProductCell else {
+            return chosenProductItemIndex = IndexPath(row: 0, section: 1)
+        }
+
+        if chosenMenuItemIndex == indexPath, chosenMenuItemIndex == IndexPath(row: 0, section: Section.product.rawValue) {
+            isNeedOffset = false
+            chosenProductItemIndex = nil
+        } else if chosenMenuItemIndex == indexPath, isNeedOffset {
+            let marginFromTopViews = view.safeAreaInsets.top + 60
+            let point = menuCell.frame.origin.y
+            collectionView.setContentOffset(CGPoint(x: 0, y: point - marginFromTopViews), animated: false)
+            isNeedOffset = false
         }
     }
 }
 
+// MARK: UICollectionViewDataSource
+
 extension MenuViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection _: Int) -> Int {
-        switch collectionView.tag {
-        case 1: return bannersData.count
-        case 2: return categoriesData.count
-        default: return 0
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        Section.allCases.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        guard let section = Section(rawValue: section) else { return 0 }
+        switch section {
+        case .banner: return bannersData.count
+        case .product: return productsData.count
         }
     }
 
@@ -100,38 +95,16 @@ extension MenuViewController: UICollectionViewDataSource {
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        switch collectionView.tag {
-        case 1:
-            let cell1 = collectionView.dequeueReusableCell(
-                withClass: BannerCollectionViewCell.self, for: indexPath
-            )
-            cell1.configure(with: bannersData[indexPath.row])
-            return cell1
-        case 2:
-            let cell2 = collectionView.dequeueReusableCell(
-                withClass: CategoryCollectionViewCell.self, for: indexPath
-            )
-            if indexPath.row == 0 {
-                cell2.state = .selected
-            }
-            cell2.configure(with: categoriesData[indexPath.row])
-            return cell2
-        default:
-            return UICollectionViewCell()
-        }
-    }
-}
-
-extension MenuViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout _: UICollectionViewLayout,
-        sizeForItemAt _: IndexPath
-    ) -> CGSize {
-        switch collectionView.tag {
-        case 1: return CGSize(width: 300, height: 112)
-        case 2: return CGSize(width: 88, height: 32)
-        default: return .zero
+        guard let section = Section(rawValue: indexPath.section) else { return UICollectionViewCell() }
+        switch section {
+        case .banner:
+            let cell = collectionView.dequeueReusableCell(withClass: BannerCell.self, for: indexPath)
+            cell.configure(with: bannersData[indexPath.row])
+            return cell
+        case .product:
+            let cell = collectionView.dequeueReusableCell(withClass: ProductCell.self, for: indexPath)
+            cell.configure(with: productsData[indexPath.row])
+            return cell
         }
     }
 }

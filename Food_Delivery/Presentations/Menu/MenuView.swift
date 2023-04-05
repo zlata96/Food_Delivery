@@ -7,34 +7,15 @@ import UIKit
 class MenuView: UIView {
     private var locationButton = LocationButton()
 
-    var promoCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
+    var collectionView: UICollectionView = {
+        let layout = LayoutManger.makeMenuViewLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.register(cellWithClass: BannerCollectionViewCell.self)
+        collectionView.register(cellWithClass: BannerCell.self)
+        collectionView.register(cellWithClass: ProductCell.self)
+        collectionView.register(CategoriesView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CategoriesView.reuseIdentifier)
         collectionView.backgroundColor = .clear
         collectionView.showsHorizontalScrollIndicator = false
         return collectionView
-    }()
-
-    var categoriesCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.register(cellWithClass: CategoryCollectionViewCell.self)
-        collectionView.backgroundColor = .clear
-        collectionView.showsHorizontalScrollIndicator = false
-        return collectionView
-    }()
-
-    var productTableView: UITableView = {
-        let tableView = UITableView()
-        tableView.register(cellWithClass: ProductTableViewCell.self)
-        tableView.rowHeight = 180
-        tableView.separatorStyle = .singleLine
-        tableView.backgroundColor = .white
-        tableView.layer.cornerRadius = 16
-        return tableView
     }()
 
     override init(frame: CGRect) {
@@ -59,9 +40,7 @@ class MenuView: UIView {
 
     private func addSubviews() {
         addSubview(locationButton)
-        addSubview(promoCollectionView)
-        addSubview(categoriesCollectionView)
-        addSubview(productTableView)
+        addSubview(collectionView)
     }
 
     private func makeConstraints() {
@@ -70,23 +49,9 @@ class MenuView: UIView {
             $0.leading.equalToSuperview().offset(16)
         }
 
-        promoCollectionView.snp.makeConstraints {
+        collectionView.snp.makeConstraints {
             $0.top.equalTo(locationButton.snp.bottom).offset(8)
-            $0.trailing.equalToSuperview()
-            $0.leading.equalToSuperview().offset(16)
-            $0.height.equalTo(112)
-        }
-
-        categoriesCollectionView.snp.makeConstraints {
-            $0.top.equalTo(promoCollectionView.snp.bottom).offset(24)
-            $0.leading.equalToSuperview().offset(16)
-            $0.trailing.equalToSuperview()
-            $0.height.equalTo(32)
-        }
-
-        productTableView.snp.makeConstraints {
             $0.leading.trailing.bottom.equalToSuperview()
-            $0.top.equalTo(categoriesCollectionView.snp.bottom).offset(24)
         }
     }
 }
