@@ -11,7 +11,15 @@ class CategoryCollectionViewCell: UICollectionViewCell {
 
         var backgroundColor: UIColor {
             switch self {
-            case .selected: return UIColor.accentColor?.withAlphaComponent(0.4) ?? .white
+            case .selected: return UIColor.accentColor?.withAlphaComponent(0.2) ?? .white
+            case .unselected: return UIColor.mainBackgroundColor ?? .white
+            }
+        }
+
+        // TODO:
+        var borderColor: UIColor {
+            switch self {
+            case .selected: return UIColor.accentColor?.withAlphaComponent(0.2) ?? .white
             case .unselected: return UIColor.mainBackgroundColor ?? .white
             }
         }
@@ -19,7 +27,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         var textColor: UIColor {
             switch self {
             case .selected: return UIColor.accentColor ?? .white
-            case .unselected: return UIColor.accentColor?.withAlphaComponent(0.4) ?? .white
+            case .unselected: return UIColor.accentColor?.withAlphaComponent(0.2) ?? .white
             }
         }
 
@@ -31,13 +39,13 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         }
     }
 
-    private lazy var productCategoryLabel: UILabel = {
-        let label = UILabel()
-        label.font = collectionViewCellState.font
-        label.textColor = collectionViewCellState.textColor
-        label.layer.borderColor = UIColor.accentColor?.withAlphaComponent(0.2).cgColor
-        return label
-    }()
+    var state: CollectionViewCellState = .unselected {
+        didSet {
+            setupStyle()
+        }
+    }
+
+    private lazy var productCategoryLabel = UILabel()
 
     private var collectionViewCellState: CollectionViewCellState = .unselected
 
@@ -58,7 +66,9 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     }
 
     private func setupStyle() {
-        backgroundColor = .mainBackgroundColor
+        backgroundColor = state.backgroundColor
+        productCategoryLabel.font = collectionViewCellState.font
+        productCategoryLabel.textColor = collectionViewCellState.textColor
         layer.cornerRadius = 16
         layer.borderWidth = 1
         layer.borderColor = UIColor.accentColor?.withAlphaComponent(0.2).cgColor

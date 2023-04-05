@@ -5,10 +5,12 @@ import UIKit
 
 class MenuViewController: UIViewController {
     private var menuView = MenuView()
+
     private let productsService = ProductsService()
+
     private var productsData: [Product] = []
-    private var categoriesData: [Category] = []
     private var bannersData: [Banner] = []
+    private var categoriesData: [Category] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +30,7 @@ class MenuViewController: UIViewController {
         menuView.categoriesCollectionView.delegate = self
     }
 
-    func fetchData() {
+    private func fetchData() {
         productsService.getBanners {
             self.bannersData = $0
             self.menuView.promoCollectionView.reloadData()
@@ -42,12 +44,22 @@ class MenuViewController: UIViewController {
             self.menuView.productTableView.reloadData()
         }
     }
+
+    private func scrollToCategory(categoryID: String) {
+        if let index = productsData.firstIndex(where: { $0.categoryID == categoryID }) {
+            menuView.productTableView.scrollToRow(
+                at: IndexPath(row: index, section: 0),
+                at: .top,
+                animated: true
+            )
+        }
+    }
 }
 
 extension MenuViewController: UITableViewDelegate {}
 
 extension MenuViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
         productsData.count
     }
 
@@ -58,10 +70,25 @@ extension MenuViewController: UITableViewDataSource {
     }
 }
 
-extension MenuViewController: UICollectionViewDelegate {}
+extension MenuViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let cell = collectionView.cellForItem(at: indexPath) as? CategoryCollectionViewCell {
+            cell.state = .selected
+            scrollToCategory(categoryID: categoriesData[indexPath.row].id)
+
+            for otherIndexPath in collectionView.indexPathsForVisibleItems {
+                if let
+                    otherCell = collectionView.cellForItem(at: otherIndexPath) as? CategoryCollectionViewCell,
+                    otherIndexPath != indexPath {
+                    otherCell.state = .unselected
+                }
+            }
+        }
+    }
+}
 
 extension MenuViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection _: Int) -> Int {
         switch collectionView.tag {
         case 1: return bannersData.count
         case 2: return categoriesData.count
@@ -84,6 +111,9 @@ extension MenuViewController: UICollectionViewDataSource {
             let cell2 = collectionView.dequeueReusableCell(
                 withClass: CategoryCollectionViewCell.self, for: indexPath
             )
+            if indexPath.row == 0 {
+                cell2.state = .selected
+            }
             cell2.configure(with: categoriesData[indexPath.row])
             return cell2
         default:
@@ -101,8 +131,7 @@ extension MenuViewController: UICollectionViewDelegateFlowLayout {
         switch collectionView.tag {
         case 1: return CGSize(width: 300, height: 112)
         case 2: return CGSize(width: 88, height: 32)
-        default:
-            return CGSize(width: 175, height: 221)
+        default: return .zero
         }
     }
 }
