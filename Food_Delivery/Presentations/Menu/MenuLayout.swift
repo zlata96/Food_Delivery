@@ -30,10 +30,10 @@ enum LayoutManger {
                 section.orthogonalScrollingBehavior = .continuous
                 return section
             case .product:
-                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(180))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
-                let itemGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.21))
+                let itemGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.25))
                 let itemGroup = NSCollectionLayoutGroup.vertical(layoutSize: itemGroupSize, repeatingSubitem: item, count: 1)
 
                 let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(68))

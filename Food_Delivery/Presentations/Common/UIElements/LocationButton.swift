@@ -14,7 +14,7 @@ class LocationButton: UIButton {
     var locationLabel: UILabel = {
         let label = UILabel()
         label.text = "Москва"
-        label.font = .systemFont(ofSize: 17)
+        label.font = .boldSystemFont(ofSize: 17)
         label.textColor = .mainTextColor
         return label
     }()

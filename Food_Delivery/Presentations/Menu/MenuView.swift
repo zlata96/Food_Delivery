@@ -50,7 +50,7 @@ class MenuView: UIView {
         }
 
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(locationButton.snp.bottom).offset(8)
+            $0.top.equalTo(locationButton.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
         }
     }

@@ -18,18 +18,17 @@ class CategoryCell: UICollectionViewCell {
             }
         }
 
-        // TODO:
         var borderColor: UIColor {
             switch self {
-            case .selected: return UIColor.accentColor?.withAlphaComponent(0.2) ?? .white
-            case .unselected: return UIColor.mainBackgroundColor ?? .white
+            case .selected: return .clear
+            case .unselected: return UIColor.categoryBorderColor ?? .white
             }
         }
-
+        
         var textColor: UIColor {
             switch self {
             case .selected: return UIColor.accentColor ?? .white
-            case .unselected: return UIColor.accentColor?.withAlphaComponent(0.2) ?? .white
+            case .unselected: return UIColor.accentColor?.withAlphaComponent(0.4) ?? .white
             }
         }
 
@@ -49,8 +48,6 @@ class CategoryCell: UICollectionViewCell {
 
     private lazy var productCategoryLabel = UILabel()
 
-    private var collectionViewCellState: CollectionViewCellState = .unselected
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
@@ -69,11 +66,11 @@ class CategoryCell: UICollectionViewCell {
 
     private func setupStyle() {
         backgroundColor = state.backgroundColor
-        productCategoryLabel.font = collectionViewCellState.font
-        productCategoryLabel.textColor = collectionViewCellState.textColor
+        productCategoryLabel.font = state.font
+        productCategoryLabel.textColor = state.textColor
         layer.cornerRadius = 16
         layer.borderWidth = 1
-        layer.borderColor = UIColor.accentColor?.withAlphaComponent(0.2).cgColor
+        layer.borderColor = state.borderColor.cgColor
     }
 
     private func addSubviews() {
